@@ -1,0 +1,32 @@
+graph TD
+    %% Perimeter Firewall Entry
+    WAN[External Fiber Entry Gateway] --> FW[Zero-Trust Core Enterprise Firewall]
+
+    %% Network Segmentation
+    FW --> VLAN10[VLAN 10: Campus Enterprise Network]
+    FW --> VLAN20[VLAN 20: FinTech Lab & Corporate Infrastructure]
+    FW --> VLAN30[VLAN 30: High-Density Public Event Wi-Fi]
+
+    %% Core Campus Connections
+    subgraph Core Campus Network
+    VLAN10 --> Eduroam[Eduroam Wireless WAPs]
+    VLAN10 --> StudDatabase[(ASU Internal Student Records)]
+    end
+
+    %% Corporate Partnerships Section
+    subgraph Secure Corporate Sandbox
+    VLAN20 --> BankGate[Dedicated Colony Bank External VPN Line]
+    VLAN20 --> ServerCluster[Secure Compute Servers with Multi-Tenant vGPUs]
+    end
+
+    %% Public High Density Infrastructure
+    subgraph Alumni Event Infrastructure
+    VLAN30 --> CaptivePortal[Alumni Registration Captive Web Portal]
+    VLAN30 --> EventWAPs[High-Density Public WAPs - Max 1,500 Concurrent Users]
+    VLAN30 --> LEDFacade[Exterior Digital Facade Media Engine]
+    end
+
+    %% Isolation Firewalls
+    VLAN30 -.->|Strict Logical Block / No Route| VLAN10
+    VLAN30 -.->|Strict Logical Block / No Route| VLAN20
+    VLAN10 -.->|Isolated Pipeline| VLAN20
