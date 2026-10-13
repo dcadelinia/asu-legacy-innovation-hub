@@ -1,0 +1,25 @@
+name: Institutional Proposal Code Validation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out Repository Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python Runtime
+      uses: actions/setup-python@v5
+      with:
+        python_python-version: '3.11'
+
+    - name: Run P3 Financial Pro Forma Matrix
+      run: python code/pro_forma.py
+
+    - name: Validate Multi-Tenant CUDA Isolation Script
+      run: python code/network_simulation.py
